@@ -11,6 +11,8 @@ function App() {
   const [taskItems,setTaskItems] = useState([])
   const [showComplete,setShowCompleted] = useState(false)
 
+  const hasCompletedTasks = taskItems.some(task => task.done);
+
   function createNewTask(taskName){    
     const lastTaskId = taskItems.length > 0 ? taskItems[taskItems.length - 1].id : 0;
     const newTask = { id: lastTaskId + 1, name: taskName, done: false };        
@@ -35,7 +37,7 @@ function App() {
   },[ ])
 
   //para eliminar 
-  const clearTask = ()=>{
+  const clearTask = ()=>{      
    setTaskItems(taskItems.filter(task => !task.done))
    setShowCompleted(false)   
   }
@@ -51,7 +53,9 @@ function App() {
       <TaskCreator createNewTask={createNewTask} />
         <TaskTable task={taskItems} toggleTask ={toggleTask}/>      
         <VisibilityControl isChecked={showComplete} setShowCompleted = {(checked) => setShowCompleted(checked)}
-        clearTask= {clearTask} />
+        clearTask= {clearTask}
+        hasCompletedTasks={hasCompletedTasks}
+        />
         {
           showComplete === true && (
               <TaskTable task={taskItems} toggleTask ={toggleTask} showComplete ={showComplete}/>      
