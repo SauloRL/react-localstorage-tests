@@ -1,25 +1,66 @@
-import logo from './logo.svg';
+import { useState, useEffect } from 'react';
 import './App.css';
+import {TaskCreator} from "./components/TaskCreator"
+import { TaskTable } from './components/TaskTable';
+import { VisibilityControl } from './components/VisibilityControl';
+import { Container } from './components/Conatainer';
+
 
 function App() {
+
+  const [taskItems,setTaskItems] = useState([])
+  const [showComplete,setShowCompleted] = useState(false)
+
+  function createNewTask(taskName){    
+    const lastTaskId = taskItems.length > 0 ? taskItems[taskItems.length - 1].id : 0;
+    const newTask = { id: lastTaskId + 1, name: taskName, done: false };        
+    if (!taskItems.find(task => task.name === taskName) && taskName !== '') {
+      setTaskItems([...taskItems, newTask]);
+    }    
+  }
+
+
+  const toggleTask = task => {
+    setTaskItems(
+      taskItems.map(t => (t.id === task.id) ? {...t, done: !t.done} : t)
+    );  
+  }
+  
+  //para cargar 
+  useEffect(()=>{
+    let data  = localStorage.getItem('tasks')
+    if(data){
+      setTaskItems(JSON.parse(data))
+    }
+  },[ ])
+
+  //para eliminar 
+  const clearTask = ()=>{
+   setTaskItems(taskItems.filter(task => !task.done))
+   setShowCompleted(false)   
+  }
+
+  //ara guardar
+  useEffect(() => {
+    localStorage.setItem('tasks',JSON.stringify(taskItems))
+  },[taskItems])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main className="bg-dark vh-100 text-white">
+      <Container>
+      <TaskCreator createNewTask={createNewTask} />
+        <TaskTable task={taskItems} toggleTask ={toggleTask}/>      
+        <VisibilityControl isChecked={showComplete} setShowCompleted = {(checked) => setShowCompleted(checked)}
+        clearTask= {clearTask} />
+        {
+          showComplete === true && (
+              <TaskTable task={taskItems} toggleTask ={toggleTask} showComplete ={showComplete}/>      
+          )
+        }
+      </Container>              
+    </main>
   );
 }
 
+//https://youtu.be/sjrK6RA65eQ?t=5116
 export default App;
