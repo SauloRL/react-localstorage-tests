@@ -25,7 +25,7 @@ export const TaskRow = ({ task, toggleTask, deleteTask, editTask, editingTaskId,
           />
           <span
             className="text-truncate"
-            style={{ width: '85%', cursor: 'pointer' }}
+            style={{ width: '90%', cursor: 'pointer' }}
             onClick={handleEditClick} // Cambia el manejo del clic para establecer la tarea en edición
           >
             {task.name}
