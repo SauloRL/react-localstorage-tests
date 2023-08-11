@@ -8,7 +8,3 @@ export const Container = ({children}) => {
     </div>
     )
 }
-
-//<div className="col-md-4 offset-md-4">
-
-//</div>        

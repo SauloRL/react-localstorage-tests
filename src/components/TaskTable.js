@@ -1,13 +1,19 @@
 import React from 'react';
 import { TaskRow } from "./TaskRow";
 
-export const TaskTable = ({ task, toggleTask, deleteTask, showComplete = false }) => {
-   
+export const TaskTable = ({ task, toggleTask, deleteTask, editTask, editingTaskId, editingTaskContent, showComplete = false }) => {   
    const taskTableRows = (doneValue) => {
       return (
          task.filter(task => task.done === doneValue)
          .map(task => (
-            <TaskRow task={task} key={task.id} toggleTask={toggleTask} deleteTask={deleteTask} />
+          <TaskRow
+          task={task}
+          key={task.id}
+          toggleTask={toggleTask}
+          deleteTask={deleteTask}
+          editTask={editTask}
+          editingTaskId={editingTaskId}
+        />
          ))
       )
    }
