@@ -21,6 +21,9 @@ function App() {
     }    
   }
 
+  function deleteTask(taskId) {
+    setTaskItems(taskItems.filter(task => task.id !== taskId));
+  }
 
   const toggleTask = task => {
     setTaskItems(
@@ -50,15 +53,15 @@ function App() {
   return (
     <main className="bg-dark vh-100 text-white">
       <Container>
-      <TaskCreator createNewTask={createNewTask} />
-        <TaskTable task={taskItems} toggleTask ={toggleTask}/>      
+      <TaskCreator createNewTask={createNewTask} />        
+        <TaskTable task={taskItems} toggleTask={toggleTask} deleteTask={deleteTask} />
         <VisibilityControl isChecked={showComplete} setShowCompleted = {(checked) => setShowCompleted(checked)}
         clearTask= {clearTask}
         hasCompletedTasks={hasCompletedTasks}
         />
         {
-          showComplete === true && (
-              <TaskTable task={taskItems} toggleTask ={toggleTask} showComplete ={showComplete}/>      
+          showComplete === true && (              
+              <TaskTable task={taskItems} toggleTask={toggleTask}  showComplete ={showComplete} deleteTask={deleteTask} />   
           )
         }
       </Container>              
